@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>518</width>
+    <height>303</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Screenshot Tool</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>521</width>
+      <height>271</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Add (N): Screenshot
+Mode(M): None
+Cancel (C): None</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>518</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuAdd">
+    <property name="title">
+     <string>Add</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuMode">
+    <property name="title">
+     <string>Mode</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuDelay">
+    <property name="title">
+     <string>Delay</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuCancel">
+    <property name="title">
+     <string>Cancel</string>
+    </property>
+   </widget>
+   <addaction name="menuAdd"/>
+   <addaction name="menuMode"/>
+   <addaction name="menuDelay"/>
+   <addaction name="menuCancel"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
