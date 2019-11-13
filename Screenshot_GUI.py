@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import sys
+import base64
 import time
 import numpy as np
 import cv2
@@ -10,11 +11,12 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from Screenshot import Ui_MainWindow
-from PIL import Image, ImageGrab
+from PIL import Image, ImageQt, ImageGrab
+
+from pic2str import modeIcon
 
 import win32clipboard as clip
 import win32con
-
 
 
 class MainWindow(QtWidgets.QMainWindow):
@@ -22,6 +24,17 @@ class MainWindow(QtWidgets.QMainWindow):
         super(MainWindow, self).__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+
+        # Load byte data
+        byte_data = base64.b64decode(modeIcon)
+        image_data = BytesIO(byte_data)
+        image = Image.open(image_data)
+
+        # PIL to QPixmap
+        qImage = ImageQt.ImageQt(image)
+        image = QPixmap.fromImage(qImage)
+
+        self.setWindowIcon(QIcon(image))
 
         self.add = QShortcut(QKeySequence("Ctrl+N"), self)
         self.add.activated.connect(self.addANewScreenshot)
