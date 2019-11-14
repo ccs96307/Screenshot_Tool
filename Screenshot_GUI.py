@@ -3,7 +3,6 @@ import sys
 import base64
 import time
 import numpy as np
-import cv2
 from io import BytesIO
 
 from PyQt5 import QtWidgets
@@ -13,7 +12,7 @@ from PyQt5.QtCore import *
 from Screenshot import Ui_MainWindow
 from PIL import Image, ImageQt, ImageGrab
 
-from pic2str import modeIcon
+from pic2str import newMode
 
 import win32clipboard as clip
 import win32con
@@ -24,9 +23,10 @@ class MainWindow(QtWidgets.QMainWindow):
         super(MainWindow, self).__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        self.ui.statusbar.setVisible(False)
 
         # Load byte data
-        byte_data = base64.b64decode(modeIcon)
+        byte_data = base64.b64decode(newMode)
         image_data = BytesIO(byte_data)
         image = Image.open(image_data)
 
