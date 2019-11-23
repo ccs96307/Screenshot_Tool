@@ -1,15 +1,12 @@
 # -*- coding: utf-8 -*-
-import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 
 
-class MainWindow(QWidget):
-    def __init__(self):
-        super(MainWindow, self).__init__()
-        self.resize(500, 500)
-        self.setWindowTitle('Painter Board')
+class PLabel(QLabel):
+    def __init__(self, centralwidget):
+        super(PLabel, self).__init__(centralwidget)
         self.tracing_xy = []
         self.lineHistory = []
         self.pen = QPen(Qt.black, 10, Qt.SolidLine)
@@ -50,10 +47,3 @@ class MainWindow(QWidget):
     def mouseReleaseEvent(self, QMouseEvent):
         self.lineHistory.append(self.start_xy+self.tracing_xy)
         self.tracing_xy = []
-
-
-if __name__ == '__main__':
-    app = QApplication([])
-    window = MainWindow()
-    window.show()
-    sys.exit(app.exec_())
