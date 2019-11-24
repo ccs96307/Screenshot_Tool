@@ -13,6 +13,7 @@ from Screenshot import Ui_MainWindow
 from PIL import Image, ImageQt, ImageGrab
 
 from pic2str import newMode
+from PaintLabel import PLabel
 
 import win32clipboard as clip
 import win32con
@@ -42,8 +43,14 @@ class MainWindow(QtWidgets.QMainWindow):
         self.exit = QShortcut(QKeySequence("Ctrl+D"), self)
         self.exit.activated.connect(self.exitEvent)
 
+        # Paint label activation
+        self.pLabel = PLabel(self.ui.centralwidget)
+        self.pLabel.setGeometry(QRect(self.ui.label.pos(), self.ui.label.size()))
+
     def addANewScreenshot(self, mode=1):
         if mode == 1:
+            self.pLabel.switchEvent(1)
+
             self.setVisible(False)
             time.sleep(0.3)
 
@@ -55,10 +62,14 @@ class MainWindow(QtWidgets.QMainWindow):
 
             QImg = QImage(image_np.data, width, height, bytesPerLine, QImage.Format_RGB888)
             pixmap = QPixmap.fromImage(QImg)
-            self.ui.label.resize(QSize(width, height))
+
+            self.showMaximized()
+            self.ui.label.resize(width, height)
             self.ui.label.setPixmap(pixmap)
             self.ui.label.setScaledContents(True)
-            self.showMaximized()
+            self.setVisible(True)
+
+            self.pLabel.resize(self.ui.label.size())
 
             # ClipBoard
             output = BytesIO()
