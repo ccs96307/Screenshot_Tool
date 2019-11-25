@@ -40,7 +40,6 @@ class PLabel(QLabel):
 
             self.painter.end()
 
-
     def mousePressEvent(self, QMouseEvent):
         if self.switch:
             self.start_xy = [(QMouseEvent.pos().x(), QMouseEvent.pos().y())]
