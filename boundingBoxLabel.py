@@ -14,6 +14,10 @@ class boxLabel(QLabel):
         self.pen = QPen(Qt.red, 10, Qt.SolidLine)
         self.switch = False
 
+        # Shortcut
+        self.add = QShortcut(QKeySequence("Ctrl+Z"), self)
+        self.add.activated.connect(self.recoveryEvent)
+
     def paintEvent(self, QPaintEvent):
         if self.switch:
             self.painter = QPainter()
@@ -36,7 +40,6 @@ class boxLabel(QLabel):
 
             self.painter.end()
 
-
     def mousePressEvent(self, QMouseEvent):
         if self.switch:
             self.start_xy = [QMouseEvent.pos().x(), QMouseEvent.pos().y()]
@@ -51,6 +54,12 @@ class boxLabel(QLabel):
             self.lineHistory.append(self.start_xy+self.tracing_xy)
             self.tracing_xy = []
 
+    def recoveryEvent(self):
+        print(self.lineHistory)
+        if self.lineHistory:
+            self.lineHistory.pop()
+            self.update()
+
     def switchEvent(self, state):
         if state == 1:
             self.switch = True
@@ -58,3 +67,6 @@ class boxLabel(QLabel):
             self.switch = False
         else:
             print('Switch Error!')
+
+    def initEvent(self):
+        self.__init__()

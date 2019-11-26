@@ -121,7 +121,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.label.resize(self.label_init_size)
         self.ui.label.setText(self.label_init_text)
         self.resize(self.window_init_size)
-        self.pLabel = boxLabel(self.ui.centralwidget)
+        self.pLabel.__init__(self.ui.centralwidget)
         self.pLabel.setGeometry(QRect(self.ui.label.pos(), self.ui.label.size()))
 
     def exitEvent(self):
