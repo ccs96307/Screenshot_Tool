@@ -48,6 +48,8 @@ Cancel (C): None</string>
     <property name="title">
      <string>Mode (M)</string>
     </property>
+    <addaction name="actionFull_Screen"/>
+    <addaction name="actionRectangular_Cut"/>
    </widget>
    <widget class="QMenu" name="menuCancel">
     <property name="title">
@@ -59,6 +61,25 @@ Cancel (C): None</string>
    <addaction name="menuCancel"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionFull_Screen">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Full Screen</string>
+   </property>
+  </action>
+  <action name="actionRectangular_Cut">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Rectangular Cut</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

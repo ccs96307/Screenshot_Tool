@@ -4,14 +4,11 @@ import base64
 import time
 import numpy as np
 from io import BytesIO
-
-from PyQt5 import QtWidgets
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from Screenshot import Ui_MainWindow
 from PIL import Image, ImageQt, ImageGrab
-
 from pic2str import newMode
 from PaintLabel import PLabel
 from boundingBoxLabel import boxLabel
@@ -20,7 +17,7 @@ import win32clipboard as clip
 import win32con
 
 
-class MainWindow(QtWidgets.QMainWindow):
+class MainWindow(QMainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
         self.ui = Ui_MainWindow()
@@ -28,7 +25,6 @@ class MainWindow(QtWidgets.QMainWindow):
         self.ui.statusbar.setVisible(False)
 
         # Parameters
-        self.mode = 1
         self.label_init_text = self.ui.label.text()
         self.label_init_size = self.ui.label.size()
         self.window_init_size = self.size()
@@ -57,6 +53,24 @@ class MainWindow(QtWidgets.QMainWindow):
         # self.pLabel = PLabel(self.ui.centralwidget)
         self.pLabel = boxLabel(self.ui.centralwidget)
         self.pLabel.setGeometry(QRect(self.ui.label.pos(), self.ui.label.size()))
+
+        # Window menubar check
+        self.mode = 1
+        self.ui.actionFull_Screen.setChecked(True)
+        self.ui.actionFull_Screen.triggered.connect(lambda: self.modeChangeEvent(1))
+        self.ui.actionRectangular_Cut.triggered.connect(lambda: self.modeChangeEvent(2))
+
+    def modeChangeEvent(self, mode):
+        if self.mode == 1 and mode == 1:
+            self.ui.actionFull_Screen.setChecked(True)
+        elif self.mode != 1 and mode == 1:
+            self.ui.actionRectangular_Cut.setChecked(False)
+            self.mode = 1
+        elif self.mode == 2 and mode == 2:
+            self.ui.actionRectangular_Cut.setChecked(True)
+        elif self.mode != 2 and mode == 2:
+            self.ui.actionFull_Screen.setChecked(False)
+            self.mode = 2
 
     def addANewScreenshot(self):
         # Full screen
@@ -94,6 +108,45 @@ class MainWindow(QtWidgets.QMainWindow):
             clip.SetClipboardData(win32con.CF_DIB, data)
             clip.CloseClipboard()
 
+        elif self.mode == 2:
+            self.setVisible(False)
+            time.sleep(0.3)
+
+            image = ImageGrab.grab()
+            image_np = np.array(image)
+
+            height, width, bytesPerComponents = image_np.shape
+            bytesPerLine = 3 * width
+
+            QImg = QImage(image_np.data, width, height, bytesPerLine, QImage.Format_RGB888)
+            pixmap = QPixmap.fromImage(QImg)
+
+            # Hide every components to show full screen
+            self.showMaximized()
+            self.setWindowFlags(Qt.FramelessWindowHint)
+            self.ui.menubar.hide()
+            self.ui.statusbar.hide()
+            self.ui.label.resize(width, height)
+            self.ui.label.setPixmap(pixmap)
+            self.ui.label.setScaledContents(True)
+            self.setVisible(True)
+
+            # PLabel
+            self.pLabel.switchEvent(1)
+            self.pLabel.resize(self.ui.label.size())
+
+            # ClipBoard
+            output = BytesIO()
+            image.convert('RGB').save(output, 'BMP')
+            data = output.getvalue()[14:]
+            output.close()
+
+            clip.OpenClipboard()
+            clip.EmptyClipboard()
+            clip.SetClipboardData(win32con.CF_DIB, data)
+            clip.CloseClipboard()
+
+
     def saveEvent(self):
         image1 = ImageQt.fromqpixmap(self.ui.label.pixmap())
         image2 = ImageQt.fromqimage(self.pLabel.grab())
@@ -129,7 +182,7 @@ class MainWindow(QtWidgets.QMainWindow):
 
 
 if __name__ == '__main__':
-    app = QtWidgets.QApplication([])
+    app = QApplication([])
     window = MainWindow()
     window.show()
     sys.exit(app.exec_())
