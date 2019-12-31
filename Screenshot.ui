@@ -7,11 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>531</width>
-    <height>298</height>
+    <height>274</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Screenshot Tool</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QLabel" name="label">

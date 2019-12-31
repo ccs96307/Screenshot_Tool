@@ -55,6 +55,7 @@ class MainWindow(QMainWindow):
         self.pLabel.setGeometry(QRect(self.ui.label.pos(), self.ui.label.size()))
 
         # Window menubar check
+        # Modes
         self.mode = 1
         self.ui.actionFull_Screen.setChecked(True)
         self.ui.actionFull_Screen.triggered.connect(lambda: self.modeChangeEvent(1))
@@ -108,6 +109,7 @@ class MainWindow(QMainWindow):
             clip.SetClipboardData(win32con.CF_DIB, data)
             clip.CloseClipboard()
 
+        # Cut
         elif self.mode == 2:
             self.setVisible(False)
             time.sleep(0.3)
